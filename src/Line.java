@@ -1,4 +1,4 @@
-
+/// Authors: Xiaoyang MENG, Cong DU, Soowoo CHANG, Wuchang LI
 public class Line {
 	public Position p1,p2;
 	public double coefficientOfLine1;

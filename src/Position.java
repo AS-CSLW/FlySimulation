@@ -1,4 +1,4 @@
-
+/// Authors: Xiaoyang MENG, Cong DU, Soowoo CHANG, Wuchang LI
 public class Position {
 
 	public double X;
