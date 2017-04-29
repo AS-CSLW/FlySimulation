@@ -11,5 +11,9 @@ public class Line {
 		return Position.doIntersect(l1.p1, l1.p2, l2.p1, l2.p2);
 	}
 	
+	static public Position intersectPos(Line l1,Line l2) {
+		return 
+	}
+	
 	
 }

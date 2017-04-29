@@ -24,7 +24,6 @@ public class Fly implements EventHandler{
  			pos = new Position(x,y);
 		}while(!this.isInsideRoom( ));
 		totalNum++;
-		//consider to directly 
 	}
 	
 	//see: http://www.geeksforgeeks.org/how-to-check-if-a-given-point-lies-inside-a-polygon/
@@ -51,7 +50,7 @@ public class Fly implements EventHandler{
 		
 	}
 	
-	private void ChangeVelWhenRunIntoWall(Position lastPosition, Line wall) {
+	private void changeVelWhenRunIntoWall(Position lastPosition, Line wall) {
 		//Cong: call by handle() in case of RunIntoWall, because the bounce back speed must be valid (direction)
 		//		so it may call changeVel() several times until it's valid (check validity using last position)
 		//		w1, w2 is two points to describe a wall.
@@ -60,7 +59,8 @@ public class Fly implements EventHandler{
 	private Position imaginaryRandomMoving(double t) {
 		//Cong: private method, assume fly flies in the current direction and generate a future position,
 		// 		this position will be used to check if it's possible or not later.
-		return new Position(0.0,0.0);
+		//compute the future position of fly if they fly in this way.
+		return new Position(this.pos.X+(this.Vx*t),this.pos.Y+(this.Vy*t));
 	}
 	
 	public void handle(Event event) {
@@ -79,6 +79,32 @@ public class Fly implements EventHandler{
 				need extra carefully processing to make sure the velocity is valid.
 				if you have better idea about how to implement this, bring it up. thx.
 		*/	
+		switch(fe.getType()) {
+		case FlyEvent.changeDirection:
+			double duration =r.nextDouble()*2;//assign a virtual time duration that fly will fly in this direction.
+			Position virtualPos = this.imaginaryRandomMoving(duration);
+			if(this.room.checkAcross(this.pos, virtualPos)) {
+				//virtual cross with boundary, the next event will be an KnockIntoWall
+				Line theWall = this.room.returnAcrossWall(this.pos,virtualPos);
+				//find the wall
+				
+				Position acrossPoint= Line.intersectPos(theWall,new Line(this.pos,virtualPos));
+				double timeSpent =0; //used to issue next event;
+				this.changeVelWhenRunIntoWall(this.pos, theWall);
+				this.pos = acrossPoint;
+				FlyEvent nextEvent = new FlyEvent(Simulator.getCurrentTime()+timeSpent,this,FlyEvent.knockIntoWall );	
+				Simulator.schedule(nextEvent);
+			}
+			else {
+				double timeSpent = duration;
+				this.pos = virtualPos;
+				this.changeVel();
+				FlyEvent nextEvent = new FlyEvent(Simulator.getCurrentTime()+timeSpend,this,FlyEvent.changeDirection);
+				
+				
+			}
+			
+		}
 	}
 	
 	
