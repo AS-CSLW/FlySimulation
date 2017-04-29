@@ -1,6 +1,6 @@
 
 public class Line {
-	// (y-p1.Y) = m(x-p1.X)
+	// equation: (y-p1.Y) = m(x-p1.X)
 	public Position p1,p2;
 	// m
 	public double coefficientOfSlope;
