@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Room {
-	public List<Line> boundarys = null;
+	private List<Line> boundarys = null;
 	//information to help drawing. or automate generate fly in room randomly (combine with isInsideRoom method).
-	private double Xmax,Xmin,Ymax,Ymin;
+	public double Xmax,Xmin,Ymax,Ymin;
 	
 	/*
 	 * Cong: assume the boundary of room is always described as polygon.
@@ -12,6 +12,7 @@ public class Room {
 	 */
 	Room(List<Position> b) {
 		boundarys = null;
+		//also determine Xmax, Xmin, Ymax, Ymin for Fly to use.
 	}
 	
 	public boolean checkAcross(Position begin,Position end) {
@@ -19,11 +20,14 @@ public class Room {
 		return true;
 	}
 	
-	public Line AcrossWall(Position begin,Position end) {
+	public Line returnAcrossWall(Position begin,Position end) {
 		//return the intersected wall
 		return new Line(new Position(0,0),new Position(1,1));
 	}
 	
+	public List<Line> returnWall() {
+		return this.boundarys;
+	}
 	
 	
 }
