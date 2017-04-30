@@ -4,7 +4,7 @@ public class Trap {
 	Line entity;
 	Room room;
 	
-	Trap(Room r,double l) {
+	Trap(Room r,double length) {
 		
 	}
 	

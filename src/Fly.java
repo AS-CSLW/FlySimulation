@@ -119,7 +119,8 @@ public class Fly implements EventHandler{
 				this.pos = virtualPos;
 				this.changeVel();
 				FlyEvent nextEvent = new FlyEvent(Simulator.getCurrentTime()+timeSpent,this,FlyEvent.changeDirection);
-				System.out.println(Simulator.getPrintableTime()+" fly "+this.flyID +" changes direction");
+				Simulator.schedule(nextEvent);
+				System.out.println(Simulator.getPrintableTime()+" fly "+this.flyID +" simply changes direction");
 			}
 			break;
 			
@@ -130,6 +131,15 @@ public class Fly implements EventHandler{
 			break;
 			
 		}
+	}
+	
+	public static void resetStat() {
+		totalNum = 0;
+		killedNum = 0;
+	}
+	
+	public static double retStat() {
+		return ((double)killedNum)/totalNum;
 	}
 	
 	

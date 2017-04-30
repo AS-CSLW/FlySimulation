@@ -5,7 +5,7 @@ public class Event implements Comparable<Event>{
 	private double sim_time;
 	private int sim_eventID;
 	private int m_eventType;
-    static private int m_nextID = 0;
+    private static int m_nextID = 0;
     
     Event() {
     	sim_eventID = m_nextID++;
