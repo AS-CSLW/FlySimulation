@@ -1,4 +1,4 @@
-/// Authors: Xiaoyang MENG, Cong DU, Soowoo CHANG, Wuchang LI
+/// Authors: Xiaoyang MENG, Cong DU, Soowon CHANG, Wuchang LI
 
 import java.util.Random;
 
@@ -57,10 +57,11 @@ public class Fly implements EventHandler{
 		
 	}
 	
-	private void changeVelWhenRunIntoWall(Position lastPosition, Line wall) {
+	private void changeVelWhenRunIntoWall(Position lastPosition, Position interPosition, Line wall) {
 		//Cong: call by handle() in case of RunIntoWall, because the bounce back speed must be valid (direction)
 		//		so it may call changeVel() several times until it's valid (check validity using last position)
 		//		w1, w2 is two points to describe a wall.
+		
 	}
 	
 	private Position imaginaryRandomMoving(double t) {
