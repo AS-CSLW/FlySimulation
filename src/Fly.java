@@ -1,4 +1,4 @@
-/// Authors: Xiaoyang MENG, Cong DU, Soowoo CHANG, Wuchang LI
+/// Authors: Xiaoyang MENG, Cong DU, Soowon CHANG, Wuchang LI
 
 import java.util.Random;
 
