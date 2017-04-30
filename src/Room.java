@@ -16,11 +16,14 @@ public class Room {
 	}
 	
 	public boolean checkAcross(Position begin,Position end) {
+		Line line = new Line(begin, end);
+
 		//Cong: this method check whether the imaginary path intersect with boundary (cause knock into boundary event)
 		return true;
 	}
-	
+
 	public Line returnAcrossWall(Position begin,Position end) {
+
 		//return the intersected wall
 		return new Line(new Position(0,0),new Position(1,1));
 	}

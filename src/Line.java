@@ -7,12 +7,7 @@ public class Line {
 	Line(Position pos1,Position pos2) {
 		p1 = pos1;
 		p2 = pos2;
-		if(p1.Y == p2.Y){
-			coefficientOfSlope = 0;
-		}else {
-				coefficientOfSlope = (p1.Y-p2.Y)/(p1.X-p2.X);
-
-		}
+		coefficientOfSlope = (p1.Y-p2.Y)/(p1.X-p2.X);
 	}
 	
 	static public boolean doInteresct(Line l1, Line l2) {

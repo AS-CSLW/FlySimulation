@@ -99,7 +99,7 @@ public class Fly implements EventHandler{
 				double timeSpent = duration;
 				this.pos = virtualPos;
 				this.changeVel();
-				FlyEvent nextEvent = new FlyEvent(Simulator.getCurrentTime()+timeSpend,this,FlyEvent.changeDirection);
+				FlyEvent nextEvent = new FlyEvent(Simulator.getCurrentTime()+timeSpent,this,FlyEvent.changeDirection);
 				
 				
 			}
