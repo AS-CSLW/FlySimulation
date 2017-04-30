@@ -1,4 +1,4 @@
-/// Author: Xiaoyang MENG, Wuchang LI, Cong DU, Soowoo CHANG
+/// Author: Xiaoyang MENG, Wuchang LI, Cong DU, Soowon CHANG
 
 public class Event implements Comparable<Event>{
 	private EventHandler m_handler;

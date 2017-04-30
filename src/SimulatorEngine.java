@@ -1,3 +1,4 @@
+/// Authors: Xiaoyang MENG, Cong DU, Soowoo CHANG, Wuchang LI
 import java.util.TreeSet;
 
 public class SimulatorEngine implements EventHandler{
