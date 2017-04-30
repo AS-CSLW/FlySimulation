@@ -49,14 +49,23 @@ public class Fly implements EventHandler{
 	
 	private void changeVel() {
 		//Cong: called by handle() when issue a new event, determine velocity vector for the fly at next event
-		
+		//Initialize velocity, housefly's top speed is 2m/s
+		Vx = 2.828*(r.nextDouble()-0.5);//
+		Vy = 2.828*(r.nextDouble()-0.5);//
 	}
 	
 	private void changeVelWhenRunIntoWall(Position lastPosition, Position interPosition, Line wall) {
 		//Cong: call by handle() in case of RunIntoWall, because the bounce back speed must be valid (direction)
 		//		so it may call changeVel() several times until it's valid (check validity using last position)
 		//		w1, w2 is two points to describe a wall.
-		
+		double dt=0.1;
+		Position nP;
+		do{
+			changeVel();
+			nP = Position(interPosition.X+Vx*dt, interPosition.Y+Vy*dt);
+		}while(Position.doIntersect(wall.p1, lastPosition, wall.p2, nP)==false);
+		//Soo: if the two lines are intersected(wall and lastposition-nextposition), it means fly is across the wall
+		//so, fly should keep change their direction, until those two lines are not intersected.
 	}
 	
 	private Position imaginaryRandomMoving(double t) {
