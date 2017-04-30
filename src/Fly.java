@@ -1,16 +1,18 @@
+/// Authors: Xiaoyang MENG, Cong DU, Soowon CHANG, Wuchang LI
+
 import java.util.Random;
 
 public class Fly implements EventHandler{
 	private double Vx,Vy;//speed of the fly
 	private Position pos;
 	private static int totalNum = 0;
-	private static int killedNum =0;
+	private static int killedNum = 0;
 	private static Random r = new Random();
 	//can't figure out a better design, decide to let every fly to save a reference of the room.
 	private Room room;
 	
 	Fly(Room room) {
-		/*Cong: 'create' a fly, I though about assgin the position by hand, but it may be too many works.
+		/*Cong: 'create' a fly, I though about assign the position by hand, but it may be too many works.
 				so it should be able to random generate 
 				Room is a parameter to make sure it's inside the room
 				
@@ -28,7 +30,7 @@ public class Fly implements EventHandler{
 	
 	//see: http://www.geeksforgeeks.org/how-to-check-if-a-given-point-lies-inside-a-polygon/
 	private boolean isInsideRoom() {
-		//Cong: helper method for Fly construtor;
+		//Cong: helper method for Fly constructor;
 		//      virtual point is a very far away point, with fly's current position together form a horizontal line 
 		Position virtualPoint = new Position((double)(Integer.MAX_VALUE),this.pos.Y);
 		Line virtualLine = new Line(this.pos,virtualPoint);
@@ -50,10 +52,11 @@ public class Fly implements EventHandler{
 		
 	}
 	
-	private void changeVelWhenRunIntoWall(Position lastPosition, Line wall) {
+	private void changeVelWhenRunIntoWall(Position lastPosition, Position interPosition, Line wall) {
 		//Cong: call by handle() in case of RunIntoWall, because the bounce back speed must be valid (direction)
 		//		so it may call changeVel() several times until it's valid (check validity using last position)
 		//		w1, w2 is two points to describe a wall.
+		
 	}
 	
 	private Position imaginaryRandomMoving(double t) {

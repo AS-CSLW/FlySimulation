@@ -1,19 +1,24 @@
+/// Authors: Xiaoyang MENG, Cong DU, Soowoo CHANG, Wuchang LI
+import javafx.geometry.Pos;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Room {
 	private List<Line> boundarys = null;
-	//information to help drawing. or automate generate fly in room randomly (combine with isInsideRoom method).
-	public double Xmax,Xmin,Ymax,Ymin;
-	
-	/*
-	 * Cong: assume the boundary of room is always described as polygon.
-	 * 		the boundarys should be a series of points in clockwise order or anticlockweise order.
-	 */
-	Room(List<Position> b) {
-		boundarys = null;
-		//also determine Xmax, Xmin, Ymax, Ymin for Fly to use.
+
+
+	private Position p1, p2, p3, p4;
+
+	// Xiaoyang: this is always a 4 segments polygon. not necessary to be a square.
+	public Room (Position Xmax, Position Xmin, Position Ymax, Position Ymin)
+	{
+		p1 = Xmax;
+		p2 = Xmin;
+		p3 = Ymax;
+		p4 = Ymin;
 	}
+
 	
 	public boolean checkAcross(Position begin,Position end) {
 		Line line = new Line(begin, end);
@@ -24,7 +29,13 @@ public class Room {
 
 	public Line returnAcrossWall(Position begin,Position end) {
 
+
+	
+	public Line returnAcrossWall(Position p,Position r) {
+
 		//return the intersected wall
+		p1 = p;
+		p3 = r;
 		return new Line(new Position(0,0),new Position(1,1));
 	}
 	
