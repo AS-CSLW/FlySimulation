@@ -10,9 +10,12 @@ public class Fly implements EventHandler{
 	private static Random r = new Random();
 	//can't figure out a better design, decide to let every fly to save a reference of the room.
 	private Room room;
+	private Trap trap;
+	private int flyID;
+	private static int nextFlyID=0;
 	
-	Fly(Room room) {
-		/*Cong: 'create' a fly, I though about assign the position by hand, but it may be too many works.
+	Fly(Room room, Trap trap) {
+		/*Cong: 'create' a fly, I though about assgin the position by hand, but it may be too many works.
 				so it should be able to random generate 
 				Room is a parameter to make sure it's inside the room
 				
@@ -20,6 +23,8 @@ public class Fly implements EventHandler{
 		//Cong: change(initialize) velocity
 		this.changeVel();
 		this.room = room;
+		this.trap = trap;
+		flyID = nextFlyID++;
 		do {
 			double x = room.Xmin + (room.Xmax-room.Xmin) * r.nextDouble();
 			double y = room.Ymin + (room.Ymax-room.Ymin) * r.nextDouble();
@@ -49,14 +54,23 @@ public class Fly implements EventHandler{
 	
 	private void changeVel() {
 		//Cong: called by handle() when issue a new event, determine velocity vector for the fly at next event
-		
+		//Initialize velocity, housefly's top speed is 2m/s
+		Vx = 2.828*(r.nextDouble()-0.5);//
+		Vy = 2.828*(r.nextDouble()-0.5);//
 	}
 	
 	private void changeVelWhenRunIntoWall(Position lastPosition, Position interPosition, Line wall) {
 		//Cong: call by handle() in case of RunIntoWall, because the bounce back speed must be valid (direction)
 		//		so it may call changeVel() several times until it's valid (check validity using last position)
 		//		w1, w2 is two points to describe a wall.
-		
+		double dt=0.1;
+		Position nP;
+		do{
+			changeVel();
+			nP = Position(interPosition.X+Vx*dt, interPosition.Y+Vy*dt);
+		}while(Position.doIntersect(wall.p1, lastPosition, wall.p2, nP)==true);
+		//Soo: if the two lines are intersected(wall and lastposition-nextposition), it means fly is across the wall
+		//so, fly should keep change their direction, until those two lines are not intersected.
 	}
 	
 	private Position imaginaryRandomMoving(double t) {
@@ -86,28 +100,57 @@ public class Fly implements EventHandler{
 		case FlyEvent.changeDirection:
 			double duration =r.nextDouble()*2;//assign a virtual time duration that fly will fly in this direction.
 			Position virtualPos = this.imaginaryRandomMoving(duration);
-			if(this.room.checkAcross(this.pos, virtualPos)) {
-				//virtual cross with boundary, the next event will be an KnockIntoWall
+			if(Line.doInteresct(this.trap.getLine(),new Line(virtualPos,this.pos)))
+			{
+				//Cong: it means Fly will sadly get into trap;
+				Position trapPoint = Line.intersectPos(this.trap.getLine(), new Line(this.pos,virtualPos));
+				//Cong: get time will spend to get into trap
+				double timeSpent = (trapPoint.X - this.pos.X)/this.Vx;
+				this.pos = trapPoint;
+				FlyEvent intoTrapEvent = new FlyEvent(Simulator.getPrintableTime()+timeSpent,this,FlyEvent.flyIntoTrap);
+				Simulator.schedule(intoTrapEvent);
+				System.out.println(Simulator.getPrintableTime()+" fly "+this.flyID +" changes direction and heading to the trap");
+			}
+			else if(this.room.checkAcross(this.pos, virtualPos)) {
+				//Cong: virtual cross with boundary, the next event will be an KnockIntoWall
 				Line theWall = this.room.returnAcrossWall(this.pos,virtualPos);
-				//find the wall
+				//Cong: find the wall
 				
 				Position acrossPoint= Line.intersectPos(theWall,new Line(this.pos,virtualPos));
 				double timeSpent =0; //used to issue next event;
 				this.changeVelWhenRunIntoWall(this.pos, theWall);
 				this.pos = acrossPoint;
-				FlyEvent nextEvent = new FlyEvent(Simulator.getCurrentTime()+timeSpent,this,FlyEvent.knockIntoWall );	
-				Simulator.schedule(nextEvent);
+				FlyEvent nextChangeDir = new FlyEvent(Simulator.getCurrentTime()+timeSpent,this,FlyEvent.changeDirection );	
+				Simulator.schedule(nextChangeDir);
+				System.out.println(Simulator.getPrintableTime()+" fly "+this.flyID +" changes direction and heading to a wall");
 			}
 			else {
 				double timeSpent = duration;
 				this.pos = virtualPos;
 				this.changeVel();
-				FlyEvent nextEvent = new FlyEvent(Simulator.getCurrentTime()+timeSpend,this,FlyEvent.changeDirection);
-				
-				
+				FlyEvent nextEvent = new FlyEvent(Simulator.getCurrentTime()+timeSpent,this,FlyEvent.changeDirection);
+				Simulator.schedule(nextEvent);
+				System.out.println(Simulator.getPrintableTime()+" fly "+this.flyID +" simply changes direction");
+
 			}
+			break;
+			
+			
+		case FlyEvent.flyIntoTrap:
+			killedNum++;
+			System.out.println(Simulator.getCurrentTime()+": a fly is killed, ID: "+Integer.toString(this.flyID));
+			break;
 			
 		}
+	}
+	
+	public static void resetStat() {
+		totalNum = 0;
+		killedNum = 0;
+	}
+	
+	public static double retStat() {
+		return ((double)killedNum)/totalNum;
 	}
 	
 	

@@ -30,6 +30,10 @@ public class Simulator {
         return getSim().getCurrentTime();
     }
 
+    public static double getPrintableTime() {
+        return Math.round(getCurrentTime() * 10000.000) / 10000.000;
+    }
+    
     public static void schedule(Event event) {
         event.setTime(event.getTime() + getSim().getCurrentTime());
         getSim().schedule(event);
