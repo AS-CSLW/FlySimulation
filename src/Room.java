@@ -48,6 +48,7 @@ public class Room {
 			return false;
 	}
 
+
 	public boolean checkAcross(Position begin,Position end) {
 		if (pointIsInTheRoom(begin) || pointIsInTheRoom(end)){
 			return true;
@@ -67,6 +68,7 @@ public class Room {
 				break;
 		}
 		return boundaries.get(i);
+
 	}
 
 	public List<Line> returnWall(){
