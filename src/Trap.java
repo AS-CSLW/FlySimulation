@@ -1,4 +1,4 @@
-//Author Xiaoyang MENG, Cong DU, Soowoo CHANG, Wuchang LI
+//Author Xiaoyang MENG, Cong DU, Soowon CHANG, Wuchang LI
 import java.util.Random;
 
 public class Trap {
