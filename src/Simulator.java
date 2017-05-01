@@ -37,5 +37,10 @@ public class Simulator {
     public static void schedule(Event event) {
         event.setTime(event.getTime() + getSim().getCurrentTime());
         getSim().schedule(event);
+        
+    }
+    
+    public static void restart() {
+    	instance = null;
     }
 }
