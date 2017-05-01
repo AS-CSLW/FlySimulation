@@ -15,7 +15,7 @@ public class Room {
 	{
 		p1 = Xmax;
 		p2 = Xmin;
-		p3 = Ymax;
+		p3 = Ymax; 
 		p4 = Ymin;
 	}
 
