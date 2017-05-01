@@ -1,4 +1,4 @@
-/// Authors: Xiaoyang MENG, Cong DU, Soowoo CHANG, Wuchang LI
+/// Authors: Xiaoyang MENG, Cong DU, Soowon CHANG, Wuchang LI
 public class Line {
 	// equation: (y-p1.Y) = m(x-p1.X)
 	public Position p1,p2;
