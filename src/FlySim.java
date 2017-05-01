@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 public class FlySim {
 	private static final int simulationTime = 300;
+	private static final int numberOfFly = 500;
+	private static final int repeatTimes = 100;
 	
 	public static void main(String[] args) {
 		ArrayList<Line> boundaries = new ArrayList<Line>();
@@ -12,9 +14,9 @@ public class FlySim {
 		Room ourRoom = new Room(boundaries);
 		Trap bestTrap = null;
 		double eliminationRate = 0;
-		for(int j=0;j<100;++j){
+		for(int j=0;j<repeatTimes;++j){
 			Trap currentTrap = new Trap(ourRoom,0.4);
-			for(int i=0;i<500;++i) {
+			for(int i=0;i<numberOfFly;++i) {
 				Fly oneFly = new Fly(ourRoom,currentTrap);
 				FlyEvent oneEvent = new FlyEvent(0.0,oneFly,FlyEvent.changeDirection);
 				Simulator.schedule(oneEvent);
