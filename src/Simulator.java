@@ -1,4 +1,4 @@
-// Author: Xiaoyang MENG, Wuchang LI, Cong DU, Soowoo CHANG
+// Author: Xiaoyang MENG, Wuchang LI, Cong DU, Soowon CHANG
 import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.ArrayList;
