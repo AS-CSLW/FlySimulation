@@ -1,4 +1,4 @@
-/// Authors: Xiaoyang MENG, Cong DU, Soowoo CHANG, Wuchang LI
+/// Authors: Xiaoyang MENG, Cong DU, Soowon CHANG, Wuchang LI
 public class FlyEvent extends Event{
 	public static final int changeDirection = 1;
 	public static final int flyIntoTrap = 2;
