@@ -1,4 +1,4 @@
-/// Authors: Xiaoyang MENG, Cong DU, Soowoo CHANG, Wuchang LI
+/// Authors: Xiaoyang MENG, Cong DU, Soowon CHANG, Wuchang LI
 public class SimulatorEvent extends Event {
 	public static final int STOP_EVENT = 0;
 	
