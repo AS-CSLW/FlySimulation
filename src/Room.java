@@ -5,25 +5,27 @@ import java.util.List;
 
 public class Room {
 	private List<Line> boundaries = null;
-	public double Xmax = 0,Xmin = 0,Ymax = 0,Ymin = 0;
-	Room(){
-		int i = 0;
+	public double Xmax = Double.MIN_VALUE,Xmin = Double.MAX_VALUE,Ymax = Double.MIN_VALUE,Ymin = Double.MAX_VALUE;
+	Room(List<Line> b) {
+		boundaries = b;
+		findRoomDomain();
+	}
+	
+
+	
+	private void findRoomDomain(){
 		for(Line boundary : boundaries){
-			Line tempLine1, tempLine2;
-			tempLine1 = boundaries.get(i);
-			tempLine2 = boundaries.get(i+1);
-			Position intersectPoint = Line.intersectPos(tempLine1, tempLine2);
-			if(intersectPoint.X > Xmax){
-					Xmax = intersectPoint.X;
+			if(boundary.p1.X > Xmax){
+					Xmax = boundary.p1.X;
 			}
-			if(intersectPoint.Y > Ymax){
-				Ymax = intersectPoint.Y;
+			if(boundary.p1.Y > Ymax){
+				Ymax = boundary.p1.Y;
 			}
-			if(intersectPoint.X < Xmin){
-				Xmin = intersectPoint.X;
+			if(boundary.p1.X < Xmin){
+				Xmin = boundary.p1.X;
 			}
-			if(intersectPoint.Y < Ymin){
-				Ymin = intersectPoint.Y;
+			if(boundary.p1.Y < Ymin){
+				Ymin = boundary.p1.Y;
 			}
 
 		}
@@ -40,35 +42,45 @@ public class Room {
 			if(Line.doInteresct(virtualLine, boundary))
 				count++;
 		}
-
-
+		
 		if(count%2==1)
 			return true;
 		else
 			return false;
-
 	}
 
 
 	public boolean checkAcross(Position begin,Position end) {
-		if (pointIsInTheRoom(begin) || pointIsInTheRoom(end)){
-			return true;
-		}else{
-			return false;
+		Line flyroute = new Line(begin,end);
+		for(Line b:boundaries) {
+			if(Line.doInteresct(b, flyroute))
+				return true;
 		}
+		return false;
 	}
 
 
-	public Line returnAcrossWall(Position p,Position r) {
-		Line flyLine = new Line(p,r);
-		int i = 0;
-		for(Line boundaries : boundaries)
+	public Line returnAcrossWall(Position begin,Position end) {
+		Line flyroute = new Line(begin,end);
+		Line result = null;
+		double dist = Double.MAX_VALUE;
+		for(int i=0;i<boundaries.size();++i)
 		{
-			i++;
-			if(Line.doInteresct(flyLine, boundaries))
-				break;
-		}
-		return boundaries.get(i);
+			
+			if(Line.doInteresct(flyroute, boundaries.get(i))) {
+				result = boundaries.get(i);
+				/*
+				Position intersectPoint = Line.intersectPos(flyroute, boundaries.get(i));
+				double temp = Position.distance(begin, intersectPoint);
+				if(temp < dist){
+					dist = temp;
+					result = boundaries.get(i);
+					}
+				*/
+				}
+			}
+		
+		return result;
 
 	}
 

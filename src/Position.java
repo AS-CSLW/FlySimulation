@@ -45,4 +45,11 @@ public class Position {
 		
 		return false;
 	}
+	
+	public static double distance(Position p1, Position p2) {
+		double result = Math.pow(p1.X - p2.X,2)+Math.pow(p1.Y-p2.Y, 2);
+		result = Math.sqrt(result);
+		
+		return result;
+	}
 }

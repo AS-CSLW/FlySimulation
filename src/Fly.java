@@ -67,8 +67,8 @@ public class Fly implements EventHandler{
 		Position nP;
 		do{
 			changeVel();
-			nP = Position(interPosition.X+Vx*dt, interPosition.Y+Vy*dt);
-		}while(Position.doIntersect(wall.p1, lastPosition, wall.p2, nP)==true);
+			nP =new Position(interPosition.X+this.Vx*dt, interPosition.Y+this.Vy*dt);
+		}while(!this.room.pointIsInTheRoom(nP));
 		//Soo: if the two lines are intersected(wall and lastposition-nextposition), it means fly is across the wall
 		//so, fly should keep change their direction, until those two lines are not intersected.
 	}
@@ -107,30 +107,30 @@ public class Fly implements EventHandler{
 				//Cong: get time will spend to get into trap
 				double timeSpent = (trapPoint.X - this.pos.X)/this.Vx;
 				this.pos = trapPoint;
-				FlyEvent intoTrapEvent = new FlyEvent(Simulator.getPrintableTime()+timeSpent,this,FlyEvent.flyIntoTrap);
+				FlyEvent intoTrapEvent = new FlyEvent(timeSpent,this,FlyEvent.flyIntoTrap);
 				Simulator.schedule(intoTrapEvent);
-				System.out.println(Simulator.getPrintableTime()+" fly "+this.flyID +" changes direction and heading to the trap");
+				System.out.println(Simulator.getPrintableTime()+" fly "+this.flyID +" changes direction and heading to the trap, contact in "+timeSpent);
 			}
-			else if(this.room.checkAcross(this.pos, virtualPos)) {
+			else if(!this.room.pointIsInTheRoom(virtualPos)) {
 				//Cong: virtual cross with boundary, the next event will be an KnockIntoWall
 				Line theWall = this.room.returnAcrossWall(this.pos,virtualPos);
 				//Cong: find the wall
 				
 				Position acrossPoint= Line.intersectPos(theWall,new Line(this.pos,virtualPos));
-				double timeSpent =0; //used to issue next event;
-				this.changeVelWhenRunIntoWall(this.pos, theWall);
+				double timeSpent =(acrossPoint.X-pos.X)/this.Vx; //used to issue next event;
+				this.changeVelWhenRunIntoWall(this.pos,acrossPoint, theWall);
 				this.pos = acrossPoint;
-				FlyEvent nextChangeDir = new FlyEvent(Simulator.getCurrentTime()+timeSpent,this,FlyEvent.changeDirection );	
+				FlyEvent nextChangeDir = new FlyEvent(timeSpent,this,FlyEvent.changeDirection );	
 				Simulator.schedule(nextChangeDir);
-				System.out.println(Simulator.getPrintableTime()+" fly "+this.flyID +" changes direction and heading to a wall");
+				System.out.println(Simulator.getPrintableTime()+" fly "+this.flyID +" changes direction and heading to a wall, contact in "+timeSpent);
 			}
 			else {
 				double timeSpent = duration;
 				this.pos = virtualPos;
 				this.changeVel();
-				FlyEvent nextEvent = new FlyEvent(Simulator.getCurrentTime()+timeSpent,this,FlyEvent.changeDirection);
+				FlyEvent nextEvent = new FlyEvent(timeSpent,this,FlyEvent.changeDirection);
 				Simulator.schedule(nextEvent);
-				System.out.println(Simulator.getPrintableTime()+" fly "+this.flyID +" simply changes direction");
+				System.out.println(Simulator.getPrintableTime()+" fly "+this.flyID +" will simply changes direction in "+timeSpent);
 
 			}
 			break;
@@ -138,7 +138,7 @@ public class Fly implements EventHandler{
 			
 		case FlyEvent.flyIntoTrap:
 			killedNum++;
-			System.out.println(Simulator.getCurrentTime()+": a fly is killed, ID: "+Integer.toString(this.flyID));
+			System.out.println(Simulator.getPrintableTime()+": a fly is killed, ID: "+Integer.toString(this.flyID));
 			break;
 			
 		}
@@ -147,6 +147,7 @@ public class Fly implements EventHandler{
 	public static void resetStat() {
 		totalNum = 0;
 		killedNum = 0;
+		nextFlyID = 0;
 	}
 	
 	public static double retStat() {
